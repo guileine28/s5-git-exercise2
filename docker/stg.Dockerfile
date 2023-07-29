@@ -1,5 +1,6 @@
 FROM httpd
 LABEL maintainer="ektech"
+LABEL env="stg"
 ARG port=80
 USER root
 RUN apt -y update
