@@ -1,1 +1,0 @@
-# s5-git-exercise
