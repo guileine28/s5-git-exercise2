@@ -62,3 +62,24 @@ I just love **bold text**.
 I just love __bold text__.
 Love**is**bold
 
+## Table 01
+| Name       | Age | Occupation      |
+|------------|-----|-----------------|
+| John       | 30  | Software Engineer |
+| Emily      | 25  | Graphic Designer |
+| Michael    | 35  | Data Analyst     |
+| Jessica    | 28  | Project Manager  |
+
+## table 02
+| Item                | Quantity | Price (USD) |
+|---------------------|---------:|------------:|
+| Laptop              |        2 |      1000   |
+| Smartphone          |        3 |       500   |
+| Headphones          |        5 |        50   |
+| External Hard Drive |        1 |       150   |
+
+## table 03
+| Syntax      | Description | Test Text     |
+| :---        |    :----:   |          ---: |
+| Header      | Title       | Here's this   |
+| Paragraph   | Text        | And more      |
