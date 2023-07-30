@@ -240,3 +240,16 @@ spec:
 - Stable helm charts [here](https://github.com/helm/charts/tree/master/stabl)
 
 [Click here to visit our website](https://www.devopseasylearning.com/)
+
+
+## image 01
+![](/images/k8s1.png)
+
+## image 02
+![](/images/k8s2.png)
+
+## image 03
+![](/images/kubernetes-architecture-diagram1.jpg)
+
+## image 04
+![](/images/table2.jpg)
