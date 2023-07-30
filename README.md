@@ -91,3 +91,49 @@ This is the first `paragraph`. It contains some text to demonstrate how Markdown
 **This is the second paragraph. Markdown is a lightweight markup language that allows you to write simple and easy-to-read formatted text. It's widely used for creating documentation, `README` files, blogs, and more**.
 
 *And this is the third paragraph*. Markdown provides various features such as headers, lists, code blocks, [links](https://www.devopseasylearning.com/), images, and more. It's a convenient and human-readable way to create formatted content without needing to deal with complex HTML or other markup languages.
+
+
+## Block of code 
+```
+#!/bin/bash
+
+# Simple bash script to calculate the factorial of a number
+
+read -p "Enter a number: " number
+
+if [[ $number -lt 0 ]]; then
+    echo "Error: Factorial is not defined for negative numbers."
+elif [[ $number -eq 0 ]]; then
+    echo "Factorial of 0 is 1."
+else
+    factorial=1
+    for (( i=1; i<=$number; i++ )); do
+        factorial=$(( factorial * i ))
+    done
+    echo "Factorial of $number is $factorial."
+fi
+```
+
+```sh
+#!/bin/bash
+
+# Simple bash script to calculate the factorial of a number
+
+read -p "Enter a number: " number
+
+if [[ $number -lt 0 ]]; then
+    echo "Error: Factorial is not defined for negative numbers."
+elif [[ $number -eq 0 ]]; then
+    echo "Factorial of 0 is 1."
+else
+    factorial=1
+    for (( i=1; i<=$number; i++ )); do
+        factorial=$(( factorial * i ))
+    done
+    echo "Factorial of $number is $factorial."
+fi
+
+mkdir tia
+groupadd hr 
+usermod -aG hr tia
+```
