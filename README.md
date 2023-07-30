@@ -137,3 +137,90 @@ mkdir tia
 groupadd hr 
 usermod -aG hr tia
 ```
+
+```Dockerfile
+FROM httpd
+LABEL maintainer="ektech"
+LABEL env="dev"
+ARG port=80
+USER root
+RUN apt -y update
+WORKDIR /usr/local/apache2/htdocs/
+
+RUN rm -rf *
+ADD ./code/* /usr/local/apache2/htdocs/
+
+ENTRYPOINT ["httpd-foreground"]
+EXPOSE ${port}
+```
+
+```s
+pipeline {
+    agent any
+    
+    environment {
+        DOCKER_REGISTRY = "your-docker-hub-account/your-docker-repo"
+        SSH_KEY_CREDENTIALS = "your-ec2-ssh-credentials-id"
+        EC2_INSTANCE_IP = "your-ec2-instance-ip"
+    }
+    
+    stages {
+        stage('Build Docker Image') {
+            steps {
+                git 'https://github.com/tia12/s5-git-exercise.git'
+                sh 'docker build -t ${DOCKER_REGISTRY}:${BUILD_NUMBER} .'
+            }
+        }
+        
+        stage('Push Docker Image') {
+            steps {
+                withDockerRegistry(credentialsId: 'docker-hub-credentials', url: '') {
+                    sh 'docker push ${DOCKER_REGISTRY}:${BUILD_NUMBER}'
+                }
+            }
+        }
+        
+        stage('Deploy to EC2') {
+            steps {
+                script {
+                    // Copy the SSH private key to the Jenkins agent
+                    withCredentials([sshUserPrivateKey(credentialsId: "${SSH_KEY_CREDENTIALS}", keyFileVariable: 'SSH_KEY')]) {
+                        // SSH commands to deploy the image on EC2
+                        sh "scp -i ${SSH_KEY} -o StrictHostKeyChecking=no -r ./code ec2-user@${EC2_INSTANCE_IP}:~"
+                        sh "ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ec2-user@${EC2_INSTANCE_IP} 'docker stop my-httpd-container || true'"
+                        sh "ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ec2-user@${EC2_INSTANCE_IP} 'docker rm my-httpd-container || true'"
+                        sh "ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ec2-user@${EC2_INSTANCE_IP} 'docker pull ${DOCKER_REGISTRY}:${BUILD_NUMBER}'"
+                        sh "ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ec2-user@${EC2_INSTANCE_IP} 'docker run -d -p 80:${port} --name my-httpd-container ${DOCKER_REGISTRY}:${BUILD_NUMBER}'"
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-httpd-app
+  labels:
+    app: httpd
+spec:
+  replicas: 3  # Number of replicas (pods) to run
+  selector:
+    matchLabels:
+      app: httpd
+  template:
+    metadata:
+      labels:
+        app: httpd
+    spec:
+      containers:
+        - name: my-httpd-container
+          image: your-registry/your-httpd-image:latest  # Replace with your actual image URL
+          ports:
+            - containerPort: 80
+
+```
