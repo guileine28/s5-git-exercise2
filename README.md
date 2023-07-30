@@ -246,7 +246,7 @@ spec:
 ![](/images/k8s1.png)
 
 ## image 02
-![](/images/k8s2.png)
+![](/images/k8s2.jpg)
 
 ## image 03
 ![](/images/kubernetes-architecture-diagram1.jpg)
